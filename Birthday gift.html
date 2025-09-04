@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Riya Moti Behen 🎂💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pink:#ff3ea5;
+      --hotpink:#ff1e90;
+      --orange:#ff8c00;
+      --teal:#3ee9d1;
+      --gold:#ffd166;
+      --bg:#08000f;
+      --card:#ffffff12;
+      --white:#fff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--white);
+      font-family:'Poppins', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(1200px 700px at 50% 40%, #160021, #000 70%);
+      overflow-x:hidden; min-height:100vh;
+    }
+    body::before{
+      content:""; position:fixed; inset:0; z-index:-2;
+      background: conic-gradient(from 0deg at 50% 50%, #ff00aa22, #ffa50022, #00ffee18, #ff00aa22);
+      filter: blur(140px); opacity:.45; animation: spin 30s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Canvas for confetti/fireworks */
+    #fx{
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+    }
+
+    header.hero{
+      position:relative; z-index:1; text-align:center;
+      padding:40px 16px 26px;
+    }
+    .pp-wrap{
+      width: 200px; height: 200px; margin: 10px auto 12px; position: relative;
+    }
+    .pp-wrap::before{
+      content:""; position:absolute; inset:-12px; border-radius:50%;
+      background: conic-gradient(from 0deg, var(--hotpink), var(--orange), var(--teal), var(--hotpink));
+      mask: radial-gradient(circle at center, transparent 82%, black 83%);
+      animation: ring 8s linear infinite;
+    }
+    @keyframes ring{to{transform:rotate(360deg)}}
+    img.profile{
+      width:100%; height:100%; border-radius:50%;
+      border:6px solid var(--pink); object-fit:cover; background:#111;
+      box-shadow:0 0 28px #ff1493, 0 0 70px #ff0080; animation: glow 2.4s infinite alternate;
+      display:block;
+    }
+    @keyframes glow{
+      from{ box-shadow:0 0 18px #ff69b4, 0 0 40px #ff0080 }
+      to{ box-shadow:0 0 40px #ff69b4, 0 0 100px #ff0080 }
+    }
+    h1{
+      font-family:'Baloo 2', cursive;
+      font-size: clamp(26px, 6vw, 50px);
+      margin: 10px 0 6px;
+      line-height:1.15; letter-spacing:.3px;
+      background: linear-gradient(90deg, #ff0080, #ffb703, #40e0d0, #ff1493);
+      background-size:400%;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      animation: shine 6s linear infinite; text-shadow:0 0 14px rgba(255,0,128,.6);
+    }
+    @keyframes shine{0%{background-position:0%}100%{background-position:400%}}
+    .tag{
+      opacity:.95; font-size:14px; margin:0 0 10px;
+    }
+    .controls{
+      display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px;
+    }
+    .btn{
+      border:none; padding:10px 16px; border-radius:999px; cursor:pointer; font-weight:700;
+      color:#fff; background:linear-gradient(135deg,#ff3ea5,#ff8c00);
+      box-shadow:0 10px 24px rgba(255,0,128,.35);
+      transition:transform .2s, filter .2s;
+    }
+    .btn:hover{transform:translateY(-2px); filter:brightness(1.07)}
+    .btn.secondary{ background:#ffffff1a; border:1px solid #ffffff2b; box-shadow:none }
+
+    /* Upload button */
+    .upload{
+      display:inline-flex; align-items:center; gap:8px; margin-top:8px; font-size:14px; opacity:.95; cursor:pointer;
+      background:#ffffff14; border:1px solid #ffffff2a; padding:8px 12px; border-radius:999px;
+    }
+    .upload input{ display:none; }
+
+    /* Sparkle stars */
+    .spark{
+      position:fixed; width:3px; height:3px; border-radius:50%;
+      background:#fff; opacity:.65; animation: twinkle var(--spd,3s) infinite alternate;
+      z-index:-1;
+    }
+    @keyframes twinkle{from{opacity:.25; transform:scale(1)}to{opacity:1; transform:scale(1.6)}}
+
+    section{ position:relative; z-index:1; padding: 18px 14px; }
+    .wrap{ width:min(1000px, 92%); margin:0 auto; }
+
+    /* Game section */
+    .game-card{
+      border-radius:22px; padding:18px; background: #ffffff10; backdrop-filter: blur(6px);
+      border:1px solid #ffffff25; box-shadow:0 0 24px #ff008022;
+    }
+    .game-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .game-title{
+      font-weight:800; letter-spacing:.3px; font-size: clamp(18px, 3.2vw, 22px);
+    }
+    .scoreboard{ display:flex; gap:12px; font-weight:700; flex-wrap:wrap; }
+    .badge{
+      padding:6px 10px; border-radius:10px; background:#ffffff1f; border:1px dashed #ffffff3a; font-size:13px;
+    }
+    .difficulty{ display:flex; align-items:center; gap:8px; }
+    .select{
+      background:#ffffff16; color:#fff; border:1px solid #ffffff3a; border-radius:10px; padding:6px 10px; font-weight:700;
+    }
+    .arena{
+      position:relative; overflow:hidden; height:380px; border-radius:16px; margin-top:12px;
+      background: radial-gradient(800px 400px at 50% 120%, #140021, #000000 70%);
+      border: 1px solid #ffffff1c;
+    }
+    .arena .hint{
+      position:absolute; inset:0; display:grid; place-items:center; text-align:center; color:#ffffffcc;
+      font-size:16px; padding:12px;
+    }
+    .emoji-big{ font-size: 38px; }
+    .balloon{
+      position:absolute; width:60px; height:80px; border-radius:50% 50% 45% 45%;
+      background: radial-gradient(circle at 30% 30%, #ff66cc, #cc0099);
+      box-shadow: 0 10px 16px rgba(0,0,0,.35);
+      user-select:none; cursor:pointer;
+      transition: transform .08s;
+    }
+    .balloon:active{ transform: scale(.92) }
+    .balloon::after{
+      content:""; position:absolute; left:50%; bottom:-60px; width:2px; height:60px;
+      background:#ffffff77; transform:translateX(-50%);
+    }
+    .knot{ position:absolute; bottom:-6px; left:50%; width:10px; height:10px; transform:translateX(-50%) rotate(45deg); background:#cc0099; }
+
+    .result{ margin-top:12px; text-align:center; display:none; }
+    .result.show{ display:block; }
+    .result .ok{ color:#7CFC00; font-weight:800 }
+    .result .no{ color:#ff8080; font-weight:800 }
+
+    /* Card (locked until win) */
+    .lock-note{ text-align:center; margin:10px 0 0; opacity:.9; font-size:14px; }
+    .card-wrap{ margin-top:20px; display:grid; place-items:center; }
+    .card{ width:min(700px, 92%); perspective:1400px; }
+    .card-inner{
+      position:relative; width:100%; min-height: 280px;
+      transform-style:preserve-3d; transition: transform .9s cubic-bezier(.2,.7,.2,1);
+    }
+    .card.open .card-inner{ transform: rotateY(180deg); }
+    .face{
+      position:absolute; inset:0; border-radius:18px; padding:20px 18px;
+      backface-visibility:hidden;
+      border:1px solid #ffffff2a; background: linear-gradient(135deg, #160022, #25003a);
+      box-shadow: 0 16px 40px rgba(0,0,0,.35), inset 0 0 24px #ff00aa22;
+    }
+    .front{ display:flex; align-items:center; justify-content:center; text-align:center; gap:10px; flex-direction:column; }
+    .front .title{
+      font-family:'Baloo 2', cursive; font-size: clamp(22px, 4.2vw, 34px);
+      background: linear-gradient(90deg, #ff4db2, #ffd166, #40e0d0, #ff4db2);
+      background-size:400%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation: shine 7s linear infinite;
+    }
+    .ribbons{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+    .rib{ font-size:13px; padding:6px 10px; border-radius:999px; background:#ffffff18; border:1px dashed #ffffff33; }
+    .back{ transform: rotateY(180deg); display:flex; flex-direction:column; justify-content:center; gap:14px; }
+    .msg{ font-size: clamp(16px, 2.8vw, 20px); line-height:1.8; white-space:pre-wrap; }
+    .sign{ margin-top:2px; font-weight:800; font-size:16px; opacity:.95 }
+
+    /* Shayari */
+    .sh-title{
+      text-align:center; margin:18px 0 6px; font-weight:800; letter-spacing:.3px;
+      font-size: clamp(18px, 3.2vw, 22px);
+    }
+    .shayari-grid{
+      display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top:10px;
+    }
+    .shayari{
+      position:relative;
+      padding:14px 40px 14px 14px; border-radius:16px; background: #ffffff0e; border:2px dashed #ff80bf77;
+      box-shadow: 0 0 20px rgba(255,0,128,.18);
+      line-height:1.75; white-space:pre-wrap; font-size:16px;
+    }
+    .copy-btn{
+      position:absolute; right:10px; top:10px; border:none; background:#ffffff1a; color:#fff; border-radius:10px; padding:6px 10px; cursor:pointer; font-weight:700; font-size:12px;
+    }
+
+    footer{ text-align:center; opacity:.8; font-size:12px; padding: 18px 0 40px; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{ animation: none !important; transition: none !important; }
+      img.profile{ box-shadow:0 0 26px #ff1493; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FX Canvas (confetti + fireworks) -->
+  <canvas id="fx"></canvas>
+
+  <!-- Soft sparkles -->
+  <script>
+    for(let i=0;i<80;i++){
+      const s = document.createElement('div');
+      s.className='spark';
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.top = Math.random()*100 + 'vh';
+      s.style.setProperty('--spd', (2 + Math.random()*3) + 's');
+      s.style.opacity = (0.3 + Math.random()*0.7).toFixed(2);
+      document.body.appendChild(s);
+    }
+  </script>
+
+  <header class="hero">
+    <div class="pp-wrap">
+      <img id="profilePic" class="profile" src="https://i.ibb.co/7yJ1kXy/girl-cartoon.jpg" alt="Riya - Birthday Girl">
+    </div>
+    <h1>🎂 Happy Birthday Riya Moti Behen 💖🎈</h1>
+    <p class="tag">Hamari ghar ki jaan — Riya Moti, hamesha hasi reh! ✨</p>
+
+    <div class="controls">
+      <button id="musicBtn" class="btn">🎵 Birthday Tune On</button>
+      <button id="blastBtn" class="btn secondary">🎉 Confetti Blast</button>
+      <label class="upload" title="Change Photo">
+        📷 Upload Photo
+        <input type="file" id="photoInput" accept="image/*">
+      </label>
+    </div>
+  </header>
+
+  <section id="game">
+    <div class="wrap">
+      <div class="game-card">
+        <div class="game-head">
+          <div class="game-title">🎮 Balloon Pop — Riya ke liye masti!</div>
+          <div class="scoreboard">
+            <span class="badge">⏱️ Time: <b id="time">20</b>s</span>
+            <span class="badge">🎯 Target: <b id="target">15</b></span>
+            <span class="badge">💥 Score: <b id="score">0</b></span>
+          </div>
+          <div class="difficulty">
+            <span class="badge">⚙️</span>
+            <select id="difficulty" class="select" title="Difficulty">
+              <option value="easy">Easy</option>
+              <option value="normal" selected>Normal</option>
+              <option value="pro">Pro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="arena" id="arena">
+          <div class="hint" id="hint">
+            <div>
+              <div class="emoji-big">🎈🎈🎈</div>
+              <div>20 sec me target balloons phodo! Tap/click karke pop karo.</div>
+              <div style="margin-top:8px">
+                <button id="startBtn" class="btn">🚀 Start Game</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="result" class="result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="card">
+    <div class="wrap">
+      <p class="lock-note" id="lockNote">🔒 Special Birthday Card locked — game jeeto aur unlock karo! 💝</p>
+      <div class="card-wrap">
+        <div id="gCard" class="card">
+          <div class="card-inner">
+            <div class="face front">
+              <div class="title">🎀 Happy Birthday, Riya Moti! 🎀</div>
+              <div class="ribbons">
+                <span class="rib">🎂 Cake</span>
+                <span class="rib">🎈 Balloons</span>
+                <span class="rib">💖 Pyaar</span>
+                <span class="rib">✨ Blessings</span>
+              </div>
+              <button id="openCardBtn" class="btn" disabled>💌 Open Card</button>
+              <div style="opacity:.8; font-size:12px">Game win karte hi open hoga!</div>
+            </div>
+            <div class="face back">
+              <div class="msg">
+Riya Moti, meri pyaari behen,
+teri hansi se ghar roshan rehta hai. Aaj ke din
+dua karta hoon ki teri har khwahish asmaan chhoo le,
+har mod par khushiyan tere kadam chumein. Humesha bright
+ban ke chamakti reh — tu hamari proud queen hai! 👑✨
+
+Happy Birthday, meri jaan si behen! 🎂🎉
+              </div>
+              <div class="sign">— Tumhra bhai, Ankit 🫶</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sh-title">💐 Riya Moti ke liye Shayari Collection 💐</h3>
+      <div class="shayari-grid" id="shGrid">
+        <div class="shayari">बहन के बिना घर सूना लगता है,
+तेरी हंसी से हर कोना झूमता है।
+रहे खुशियों की बरसात तुझ पर सदा,
+Happy Birthday Riya Moti! 🎂💖</div>
+
+        <div class="shayari">तेरा नाम लेते ही दिल मुस्कुराए,
+तेरी बातें ठंडी छांव बन जाएं।
+रहे तू सदा खुश, यही दुआ हमारी,
+जन्मदिन मुबारक हो प्यारी मोती हमारी! 🌸✨</div>
+
+        <div class="shayari">रिश्तों की सबसे मीठी डोर — बहन का प्यार,
+तेरे बिना अधूरा हर त्योहार।
+खुशियों से महके हर एक बहार,
+Happy B’day Riya, tu sabse ख़ास यार! 🎁🎈</div>
+
+        <div class="shayari">ना सोना-चांदी, ना ही कोई हार,
+हमारी मोती सबसे अनमोल उपहार!
+रहे तेरी मुस्कान हर पल बरकरार,
+HBD Riya! 💎💞</div>
+
+        <div class="shayari">तेरे होने से है घर की रौनक,
+तेरे संग हर पल प्यारा अनमोल।
+जीवन में आएं नई-नई मंज़िलें,
+और हर ख्वाब हो जाए गोल। 🎯🌟</div>
+
+        <div class="shayari">कभी रूठना, कभी मनाना — अपनापन यही,
+तेरे बिन अधूरी मेरी दुनिया सही।
+रहे तू सदा हंसती-मुस्कुराती,
+Happy Birthday Moti Behen ji! 😄🎉</div>
+
+        <div class="shayari">तेरी मीठी बातों की खुशबू छा जाए,
+दुआओं का साया तुझ पर रह जाए।
+हंसती रहो, खिलती रहो सदा,
+Riya Moti, zindagi me rang saja जाए! 🌈💗</div>
+
+        <div class="shayari">आज cake bhi kahe “मेरी क्वीन आ गई”,
+balloons bhi bole “party time भाई!”,
+नाचेगी खुशियाँ, बजेगा सारा जहाँ,
+Happy Birthday Riya, rock on! 🍰🎶</div>
+
+        <div class="shayari">तेरे हर कदम पे हो सफलता की रोशनी,
+आगे बढ़े तू, न रुके कभी।
+बस मुस्कुराती रहना यूँ ही,
+Happy Birthday, meri sweet si Moti! ✨💫</div>
+
+        <div class="shayari">ना कोई तुलना, ना कोई मिसाल,
+मेरी बहन सबसे कमाल।
+तेरे नाम की ही है ये शाम,
+HBD Riya! ❤️🌙</div>
+
+        <div class="shayari">माँ की दुलारी, पापा की शान,
+भाई की जान — Riya महान!
+खुशियों की मिले तुझे उड़ान,
+Happy Birthday! 🪽🎊</div>
+
+        <div class="shayari">मेरी बहना, तू lucky charm,
+तेरे बिना सब लगता calm-less calm।
+रहे तू safe, रहे तू warm,
+HBD Riya, big hug from bro! 🤗💝</div>
+
+        <div class="shayari">मोती नाम नहीं, प्यार की निशानी हो तुम,
+हमारे हर कल की कहानी हो तुम।
+जगमगाती रहो यूँ ही मुस्कानों से,
+Riya, har dil ki Mehrbani ho tum. 💖💫</div>
+
+        <div class="shayari">हर सुबह तेरे नाम की किरणें आएं,
+हर रात दुआओं के दीप जलें।
+जन्मदिन पर बस इतनी सी दुआ,
+तेरे चेहरे से मुस्कान कभी न ढले। 🌅🕯️</div>
+
+        <div class="shayari">मुस्कुराहट तेरी सबसे प्यारी,
+दिल से निकली ये दुआ हमारी —
+सफलता तेरे कदम चूमे सारी,
+Happy Birthday meri pyaari! 🌟🎉</div>
+
+        <div class="shayari">कंधे से कंधा, हाथों में हाथ,
+हर मोड़ पर मैं तेरे साथ।
+Riya Moti, meri shaan-o-maan,
+HBD sis, you’re a star! ⭐🫶</div>
+
+        <div class="shayari">तेरी बातों में मिठास है,
+तेरे सपनों में आकाश है।
+खुशियों से भर जाए हर पल,
+Riya, tu meri special aas hai! 🌙🍬</div>
+
+        <div class="shayari">तू हँस दे तो मौसम बदल जाए,
+तेरी आँखों में खुशियाँ खिल जाएँ।
+रहे तेरा हर दिन festival जैसा,
+Happy Birthday, behna! 🥳🎏</div>
+
+        <div class="shayari">दुआ है रहे तेरा safar रोशन,
+ना आए कभी कोई भी tension।
+Bro hamesha tere saath — mention! 😎
+HBD Riya! ✨💪</div>
+
+        <div class="shayari">ना रूठना आज, ना रोना आज,
+बस cake khana aur hasna aaj!
+Party mode on — Riya Moti ka raaj! 🍰🎈</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Made with ❤️ for Riya Moti — from her proud bhai, Ankit</footer>
+
+  <script>
+    // ---------------- Canvas Confetti/Fireworks ----------------
+    const c = document.getElementById('fx');
+    const ctx = c.getContext('2d', { alpha:true });
+    let W = c.width = innerWidth;
+    let H = c.height = innerHeight;
+
+    const bits = [];
+    const colors = ['#ff3ea5','#ff8c00','#40e0d0','#ffd166','#06d6a0','#ef476f','#8338ec'];
+    function rand(a,b){ return Math.random()*(b-a)+a }
+    function addBurst(x,y,count=100, spread=2*Math.PI, baseSpeed=6){
+      for(let i=0;i<count;i++){
+        const ang = rand(0, spread);
+        const spd = baseSpeed * (0.6 + Math.random()*0.8);
+        bits.push({
+          x,y, vx: Math.cos(ang)*spd, vy: Math.sin(ang)*spd - rand(1.5,4.5),
+          g: .08, drag:.995, r: rand(2,5), rot: rand(0,Math.PI*2), rotS: rand(-.2,.2),
+          c: colors[(Math.random()*colors.length)|0], life: rand(70,130), alpha:1, type: Math.random()<.5?'rect':'circ'
+        });
+      }
+    }
+    function loop(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=bits.length-1;i>=0;i--){
+        const p=bits[i];
+        p.vy += p.g; p.vx*=p.drag; p.x+=p.vx; p.y+=p.vy; p.rot+=p.rotS; p.life--; p.alpha=Math.max(0,p.life/130);
+        ctx.save(); ctx.globalAlpha=p.alpha; ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c;
+        if(p.type==='rect'){ ctx.fillRect(-p.r, -p.r*0.6, p.r*2, p.r*1.2); }
+        else { ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); }
+        ctx.restore();
+        if(p.life<=0 || p.y>H+20 || p.x<-20 || p.x>W+20){ bits.splice(i,1); }
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+    addEventListener('resize', ()=>{ W=c.width=innerWidth; H=c.height=innerHeight; });
+
+    function confettiAt(x,y,n=120){ addBurst(x,y,n); }
+    function fireworks(){
+      const n=5+Math.floor(Math.random()*3);
+      for(let i=0;i<n;i++) setTimeout(()=>{
+        const x=rand(0.15,0.85)*W, y=rand(0.1,0.4)*H; addBurst(x,y,130, 2*Math.PI, 7);
+      }, i*300);
+    }
+
+    // ---------------- Photo Upload ----------------
+    const photoInput = document.getElementById('photoInput');
+    const profilePic = document.getElementById('profilePic');
+    photoInput.addEventListener('change', (e)=>{
+      const file = e.target.files?.[0];
+      if(!file) return;
+      const url = URL.createObjectURL(file);
+      profilePic.src = url;
+    });
+
+    // ---------------- Pop Sound (WebAudio) ----------------
+    let audioCtx;
+    function ensureCtx(){
+      if(!audioCtx){
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if(AC) audioCtx = new AC();
+      }
+      return audioCtx;
+    }
+    function popSound(){
+      try{
+        if(!ensureCtx()) return;
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type='triangle'; o.frequency.value=520+Math.random()*180;
+        g.gain.value=0.15;
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start();
+        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.15);
+        o.stop(audioCtx.currentTime+0.15);
+      }catch(e){}
+    }
+
+    // ---------------- Birthday Tune (WebAudio melody) ----------------
+    const musicBtn = document.getElementById('musicBtn');
+    let musicOn = false, musicTimers = [];
+    const NoteFreq = {
+      'C4':261.63, 'D4':293.66, 'E4':329.63, 'F4':349.23, 'G4':392.00, 'A4':440.00, 'B4':493.88,
+      'C5':523.25, 'D5':587.33, 'E5':659.25, 'F5':698.46, 'G5':783.99, 'A5':880.00
+    };
+    const melody = [
+      ['G4',.4],['G4',.4],['A4',.8],['G4',.8],['C5',.8],['B4',1.2],
+      ['G4',.4],['G4',.4],['A4',.8],['G4',.8],['D5',.8],['C5',1.2],
+      ['G4',.4],['G4',.4],['G5',.8],['E5',.8],['C5',.8],['B4',.8],['A4',1.2],
+      ['F5',.4],['F5',.4],['E5',.8],['C5',.8],['D5',.8],['C5',1.4]
+    ];
+    function playNote(freq, start, dur){
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(freq, start);
+      g.gain.setValueAtTime(0.0001, start);
+      g.gain.exponentialRampToValueAtTime(0.18, start+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, start+dur);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(start);
+      o.stop(start+dur+0.02);
+    }
+    function startMelodyLoop(){
+      if(!ensureCtx()) return;
+      const tempo = 1.0; // lower = slower
+      function scheduleLoop(offset=audioCtx.currentTime+0.05){
+        let t = offset;
+        for(const [note, len] of melody){
+          if(note==='rest'){ t += len*tempo; continue; }
+          const f = NoteFreq[note] || 440;
+          playNote(f, t, len*tempo);
+          t += len*tempo + 0.02;
+        }
+        // loop
+        musicTimers.push(setTimeout(()=> scheduleLoop(t), (t - audioCtx.currentTime)*1000));
+      }
+      scheduleLoop();
+    }
+    function stopMelody(){
+      musicTimers.forEach(id=> clearTimeout(id));
+      musicTimers = [];
+    }
+    async function toggleMusic(){
+      if(!musicOn){
+        try{
+          if(!ensureCtx()) throw new Error('No AudioContext');
+          if(audioCtx.state === 'suspended') await audioCtx.resume();
+          startMelodyLoop();
+          musicOn = true;
+          musicBtn.textContent = '🔇 Birthday Tune Off';
+        }catch(e){}
+      }else{
+        stopMelody();
+        musicOn = false;
+        musicBtn.textContent = '🎵 Birthday Tune On';
+      }
+    }
+    musicBtn.addEventListener('click', toggleMusic);
+    addEventListener('pointerdown', ()=>{ if(!musicOn) toggleMusic(); }, {once:true});
+
+    // ---------------- Confetti Buttons ----------------
+    document.getElementById('blastBtn').addEventListener('click', ()=> confettiAt(W/2, H*.35, 160));
+
+    // ---------------- Balloon Pop Game ----------------
+    const arena = document.getElementById('arena');
+    const hint = document.getElementById('hint');
+    const startBtn = document.getElementById('startBtn');
+    const timeEl = document.getElementById('time');
+    const scoreEl = document.getElementById('score');
+    const targetEl = document.getElementById('target');
+    const resultEl = document.getElementById('result');
+    const diffSel = document.getElementById('difficulty');
+
+    let running=false, timer=20, score=0, target=15, raf, balloons=[];
+    const modes = {
+      easy:{ time:24, target:12 },
+      normal:{ time:20, target:15 },
+      pro:{ time:18, target:20 }
+    };
+    function applyMode(){
+      const m = modes[diffSel.value] || modes.normal;
+      timer=m.time; target=m.target;
+      timeEl.textContent = timer;
+      targetEl.textContent = target;
+    }
+    applyMode();
+    diffSel.addEventListener('change', ()=>{
+      if(!running){
+        applyMode();
+      }
+    });
+
+    function spawnBalloon(){
+      const b = document.createElement('div');
+      b.className='balloon';
+      const hue = Math.floor(Math.random()*360);
+      b.style.background = `radial-gradient(circle at 30% 30%, hsl(${hue} 100% 72%), hsl(${hue} 85% 45%))`;
+      const x = Math.random()*(arena.clientWidth-70);
+      const y = arena.clientHeight + Math.random()*60 + 20;
+      b.style.left = x + 'px'; b.style.top = y + 'px';
+      const speed = 1.2 + Math.random()*1.8; // px per frame
+      const sway = (Math.random()<.5?-1:1) * (0.3 + Math.random()*0.8);
+      b.dataset.speed = speed; b.dataset.sway = sway; b.dataset.phase = Math.random()*Math.PI*2;
+      const knot = document.createElement('div'); knot.className='knot'; b.appendChild(knot);
+      b.addEventListener('click', ()=> popBalloon(b));
+      arena.appendChild(b); balloons.push(b);
+      setTimeout(()=> b.remove(), 8000);
+    }
+
+    function popBalloon(b){
+      if(!running || !b.isConnected) return;
+      score++; scoreEl.textContent = score;
+      const rect = b.getBoundingClientRect();
+      confettiAt(rect.left+rect.width/2, rect.top+rect.height/2, 45);
+      popSound();
+      b.remove();
+    }
+
+    function animateBalloons(){
+      if(!running) return;
+      for(const b of balloons){
+        if(!b.isConnected) continue;
+        const y = parseFloat(b.style.top);
+        const x = parseFloat(b.style.left);
+        const speed = parseFloat(b.dataset.speed);
+        const sway = parseFloat(b.dataset.sway);
+        const phase = (parseFloat(b.dataset.phase)||0) + 0.05;
+        b.dataset.phase = phase;
+        b.style.top = (y - speed) + 'px';
+        b.style.left = (x + Math.sin(phase)*sway) + 'px';
+        if(y < -120){ b.remove(); }
+      }
+      raf = requestAnimationFrame(animateBalloons);
+    }
+
+    function gameTick(){
+      if(!running) return;
+      timer--; timeEl.textContent = timer;
+      const n = 2 + Math.floor(Math.random()*2);
+      for(let i=0;i<n;i++) setTimeout(spawnBalloon, i*200);
+      if(timer<=0){ endGame(); }
+      else setTimeout(gameTick, 1000);
+    }
+
+    function startGame(){
+      applyMode();
+      running=true; score=0; scoreEl.textContent='0'; timeEl.textContent=timer;
+      hint.style.display='none'; resultEl.classList.remove('show'); resultEl.textContent='';
+      balloons.forEach(b=>b.remove()); balloons=[];
+      gameTick(); animateBalloons();
+    }
+
+    function endGame(){
+      running=false; cancelAnimationFrame(raf);
+      const win = score>=target;
+      resultEl.className='result show';
+      if(win){
+        resultEl.innerHTML = "✅ <span class='ok'>Wah! Target poora ho gaya.</span> Special Card unlock ho gaya! ⬇️";
+        unlockCard();
+        fireworks();
+        setTimeout(()=> document.getElementById('card').scrollIntoView({behavior:'smooth'}), 450);
+      }else{
+        resultEl.innerHTML = "❌ <span class='no'>Thoda aur pop karo!</span> Phir se try karo, bro. 💪";
+        hint.style.display='grid';
+      }
+    }
+
+    startBtn.addEventListener('click', startGame);
+
+    // ---------------- Card Unlock + Flip ----------------
+    const card = document.getElementById('gCard');
+    const lockNote = document.getElementById('lockNote');
+    const openCardBtn = document.getElementById('openCardBtn');
+
+    function unlockCard(){
+      openCardBtn.disabled=false;
+      lockNote.textContent = "🔓 Card unlocked! Click 'Open Card' aur pyaar bharā message dekho. 💖";
+      const y = Math.min(innerHeight*0.55, innerHeight-120);
+      confettiAt(innerWidth/2, y, 180);
+    }
+    openCardBtn.addEventListener('click', ()=>{
+      card.classList.toggle('open');
+      fireworks();
+      confettiAt(W/2, H*.5, 180);
+    });
+
+    // Click anywhere = small confetti
+    addEventListener('click', (e)=> {
+      if(e.target.closest('.btn') || e.target.closest('.balloon') || e.target.closest('.select') || e.target.closest('.upload')) return;
+      confettiAt(e.clientX, e.clientY, 60);
+    });
+
+    // ---------------- Shayari Copy Buttons ----------------
+    const shGrid = document.getElementById('shGrid');
+    function addCopyButtons(){
+      shGrid.querySelectorAll('.shayari').forEach((card)=>{
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = '📋 Copy';
+        btn.addEventListener('click', async (e)=>{
+          e.stopPropagation();
+          try{
+            await navigator.clipboard.writeText(card.innerText.trim());
+            const old = btn.textContent;
+            btn.textContent = '✅ Copied';
+            setTimeout(()=> btn.textContent = old, 1200);
+          }catch(err){
+            btn.textContent = '❌ Error';
+            setTimeout(()=> btn.textContent = '📋 Copy', 1200);
+          }
+        });
+        card.appendChild(btn);
+      });
+    }
+    addCopyButtons();
+
+    // Welcome fireworks
+    setTimeout(()=> fireworks(), 900);
+  </script>
+</body>
+</html> #ankit
